@@ -15,35 +15,57 @@ function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async () => {
+    console.log("CLICK WORKING"); // ✅ check click
 
-  console.log("CLICK WORKING"); // 👈 check button
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        form
+      );
 
-  try {
-    const res = await axios.post("http://localhost:5000/api/auth/register", form);
-
-    console.log("SUCCESS:", res); // 👈 check response
-    alert("Registered Successfully");
-    navigate("/");
-  } catch (err) {
-    console.log("ERROR:", err.response || err); // 👈 check error
-    alert("Error registering");
-  }
-};
+      console.log("SUCCESS:", res);
+      alert("Registered Successfully");
+      navigate("/");
+    } catch (err) {
+      console.log("ERROR:", err);
+      alert("Error registering");
+    }
+  };
 
   return (
     <div style={styles.container}>
       <div style={styles.box}>
-        <h2 style={{color:"red"}}>TEST PAGE</h2>
+        <h2>Create Account</h2>
 
-        <form onSubmit={handleSubmit}>
-          <input name="name" placeholder="Name" onChange={handleChange} style={styles.input} />
-          <input name="email" placeholder="Email" onChange={handleChange} style={styles.input} />
-          <input name="password" type="password" placeholder="Password" onChange={handleChange} style={styles.input} />
+        <input
+          name="name"
+          placeholder="Name"
+          onChange={handleChange}
+          style={styles.input}
+        />
 
-          <button type="submit" style={styles.button}>Register</button>
-        </form>
+        <input
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+          style={styles.input}
+        />
+
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+          style={styles.input}
+        />
+
+        <button
+          onClick={handleSubmit}
+          style={styles.button}
+        >
+          Register
+        </button>
 
         <p onClick={() => navigate("/")} style={styles.link}>
           Already have an account? Login
@@ -79,7 +101,8 @@ const styles = {
     padding: "10px",
     background: "#000",
     color: "#fff",
-    border: "none"
+    border: "none",
+    cursor: "pointer"
   },
   link: {
     color: "blue",
